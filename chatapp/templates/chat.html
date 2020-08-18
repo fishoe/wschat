@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+    var connect
+    window.addEventListener('load', function(){
+        connect = new WebSocket('ws://localhost:8000/');
+
+        connect.onopen = function(evt){onOpen(evt)};
+        connect.onclose = function(evt){onClose(evt)};
+        connect.onmessage = function(evt){onMessage(evt)};
+        connect.onerror = function(evt){onError(evt)};
+    })
+
+
+    function onOpen(evt){
+        console.log(evt.data);
+    }
+    function onClose(evt){
+        console.log(evt.data);
+    }
+    function onMessage(evt)
+    {
+        console.log(evt.data);
+        document.getElementById('chatbox').innerHTML += '\n';
+        document.getElementById('chatbox').innerHTML += evt.data;
+    }
+    function sendBtn()
+    {
+        msg = document.getElementById('message').value;
+        connect.send(msg);
+        document.getElementById('message').value='';
+    }
+</script>
+</head>
+<body>
+<textarea id='chatbox' cols="100" rows="30"> </textarea><br>
+<input type="text" id="message"> <input type="button" value="send" onclick="sendBtn()">
+</body>
+
+</html>
